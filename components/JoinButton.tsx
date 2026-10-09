@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { button } from "@/lib/styles";
 import { WAITLIST_INPUT_ID } from "./WaitlistForm";
 
 export default function JoinButton() {
   return (
     <Link
-      className="btn btn-ink"
+      className={button("ink", "sm")}
       href="/#top"
       onClick={() => {
         setTimeout(() => {

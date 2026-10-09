@@ -4,6 +4,7 @@ import { Suspense, type CSSProperties } from "react";
 import Footer from "@/components/Footer";
 import MissingPath from "@/components/MissingPath";
 import Nav from "@/components/Nav";
+import { button, eyebrow, jobCard, pill, strike } from "@/lib/styles";
 
 export const metadata: Metadata = {
   title: "Page not found — Jobber",
@@ -21,53 +22,55 @@ export default function NotFound() {
   return (
     <>
       <Nav />
-      <main className="nf wrap">
-        <p className="eyebrow">Error 404</p>
-        <h1>
-          This page <span className="strike">replied</span> ghosted you.
+      <main className="mx-auto flex max-w-[1160px] flex-col items-center px-5 pt-[88px] pb-[104px] text-center">
+        <p className={eyebrow}>Error 404</p>
+        <h1 className="mt-[18px] max-w-[14ch] font-display text-[clamp(40px,7vw,80px)] font-black leading-[0.98] tracking-[-0.045em] text-balance">
+          This page <span className={strike}>replied</span> ghosted you.
         </h1>
-        <p className="nf-sub">
+        <p className="mt-5 max-w-[46ch] text-lg text-muted">
           Happens to the best of us. The page you applied to doesn&apos;t exist, or it moved without
           telling anyone.
         </p>
 
-        <article className="job nf-card">
-          <div className="job-top">
-            <span className="co nf-co">404</span>
-            <span className="job-co">
+        <article
+          className={`${jobCard.card} mt-12 w-full max-w-[400px] -rotate-2 shadow-[0_24px_60px_-28px_color-mix(in_srgb,var(--ink)_40%,transparent)]`}
+        >
+          <div className={jobCard.top}>
+            <span className={`${jobCard.logo} bg-ink font-mono text-[11px] font-medium text-bg`}>404</span>
+            <span className={jobCard.company}>
               jobber.ai
               <br />
               Salary: undisclosed
             </span>
           </div>
-          <h4 className="nf-path">
+          <h4 className={`${jobCard.title} font-mono [overflow-wrap:anywhere]`}>
             <Suspense fallback="/this-page">
               <MissingPath />
             </Suspense>
           </h4>
-          <div className="job-meta">Location unknown</div>
-          <ol className="nf-log">
+          <div className={jobCard.meta}>Location unknown</div>
+          <ol className="mt-4 grid gap-1.5 border-t border-dashed border-line pt-3.5 font-mono text-xs text-muted">
             {log.map((line) => (
-              <li key={line.time} className={line.tone === "warn" ? "warn" : undefined}>
-                <time>{line.time}</time>
+              <li key={line.time} className={`flex gap-3 ${line.tone === "warn" ? "text-warn" : ""}`}>
+                <time className="flex-none tabular-nums opacity-70">{line.time}</time>
                 <span>{line.text}</span>
               </li>
             ))}
           </ol>
-          <div className="job-foot">
-            <span className="match" style={{ "--m": "0%" } as CSSProperties}>
-              <i />
+          <div className={jobCard.foot}>
+            <span className={jobCard.match} style={{ "--m": "0%" } as CSSProperties}>
+              <i className={jobCard.matchBar} />
               0%
             </span>
-            <span className="pill ghosted">Ghosted</span>
+            <span className={pill("ghosted")}>Ghosted</span>
           </div>
         </article>
 
-        <div className="nf-ctas">
-          <Link className="btn btn-ink" href="/">
+        <div className="mt-12 flex flex-wrap justify-center gap-2.5">
+          <Link className={button("ink")} href="/">
             Back to the homepage
           </Link>
-          <Link className="btn btn-ghost" href="/#top">
+          <Link className={button("ghost")} href="/#top">
             Join the waitlist
           </Link>
         </div>

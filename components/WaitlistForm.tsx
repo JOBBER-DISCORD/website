@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { button } from "@/lib/styles";
 
 export const WAITLIST_INPUT_ID = "wl-email";
 
@@ -49,18 +50,22 @@ export default function WaitlistForm() {
     }
   }
 
-  const noteClass =
-    status === "done" ? "wl-note ok" : status === "error" ? "wl-note err" : "wl-note";
+  const noteColor =
+    status === "done" ? "font-semibold text-ok" : status === "error" ? "text-warn" : "text-muted";
 
   return (
     <>
       <form
-        className={status === "done" ? "waitlist done" : "waitlist"}
+        className={`mx-auto mt-[34px] flex max-w-[520px] items-center gap-2 rounded-full border border-line bg-surface p-2 shadow-[0_18px_50px_-20px_color-mix(in_srgb,var(--ink)_30%,transparent)] max-[620px]:flex-col max-[620px]:items-stretch max-[620px]:rounded-[22px] ${status === "done" ? "pointer-events-none opacity-60" : ""}`}
         onSubmit={onSubmit}
         noValidate
       >
-        <label htmlFor={WAITLIST_INPUT_ID}>
+        <label
+          className="flex min-w-0 flex-1 items-center gap-2.5 pl-3.5 text-left max-[620px]:py-1"
+          htmlFor={WAITLIST_INPUT_ID}
+        >
           <svg
+            className="flex-none text-muted"
             width="18"
             height="18"
             viewBox="0 0 24 24"
@@ -73,6 +78,7 @@ export default function WaitlistForm() {
             <path d="m3 7 9 6 9-6" />
           </svg>
           <input
+            className="w-full min-w-0 border-0 bg-transparent py-2 text-[15.5px] text-ink outline-none placeholder:text-muted"
             id={WAITLIST_INPUT_ID}
             name={WAITLIST_INPUT_ID}
             type="email"
@@ -85,7 +91,7 @@ export default function WaitlistForm() {
           />
         </label>
         <button
-          className="btn btn-accent"
+          className={`${button("accent", "lg")} flex-none max-[620px]:justify-center`}
           type="submit"
           disabled={status === "submitting" || status === "done"}
         >
@@ -96,7 +102,7 @@ export default function WaitlistForm() {
               : "Join the waitlist"}
         </button>
       </form>
-      <p className={noteClass} aria-live="polite">
+      <p className={`mt-3.5 text-[13.5px] ${noteColor}`} aria-live="polite">
         {message}
       </p>
     </>
