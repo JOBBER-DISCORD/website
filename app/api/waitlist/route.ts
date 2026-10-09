@@ -1,3 +1,5 @@
+import { db } from "@/lib/db";
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: Request) {
@@ -11,7 +13,20 @@ export async function POST(request: Request) {
     );
   }
 
-  console.log(`[waitlist] new signup: ${email}`);
+  try {
+    // Repeat signups succeed silently so the form doesn't reveal who's already on the list.
+    await db()`
+      insert into waitlist_signups (email)
+      values (${email})
+      on conflict (email) do nothing
+    `;
+  } catch (err) {
+    console.error("[waitlist] failed to save signup", err);
+    return Response.json(
+      { error: "Couldn't join the waitlist." },
+      { status: 500 },
+    );
+  }
 
   return Response.json({ ok: true });
 }
