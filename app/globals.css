@@ -445,3 +445,99 @@ footer.site .wrap {
   align-items: center;
   justify-content: space-between;
 }
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.nf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-block: 88px 104px;
+}
+.nf h1 {
+  margin-top: 18px;
+  font-size: clamp(40px, 7vw, 80px);
+  line-height: 0.98;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  max-width: 14ch;
+}
+.nf h1 .strike {
+  position: relative;
+  color: var(--muted);
+  font-weight: 700;
+}
+.nf h1 .strike::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: 54%;
+  height: 0.09em;
+  background: var(--accent);
+  transform: rotate(-2deg);
+  border-radius: 4px;
+}
+.nf-sub {
+  margin-top: 20px;
+  max-width: 46ch;
+  font-size: 18px;
+  color: var(--muted);
+}
+.nf-card {
+  margin-top: 48px;
+  width: min(100%, 400px);
+  transform: rotate(-2deg);
+  box-shadow: 0 24px 60px -28px color-mix(in srgb, var(--ink) 40%, transparent);
+}
+.nf-co {
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+}
+.nf-path {
+  font-family: var(--mono);
+  overflow-wrap: anywhere;
+}
+.nf-log {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px dashed var(--line);
+  display: grid;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+.nf-log li {
+  display: flex;
+  gap: 12px;
+}
+.nf-log time {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+.nf-log li.warn {
+  color: var(--warn);
+}
+.pill.ghosted {
+  background: var(--line);
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.nf-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 48px;
+}
