@@ -14,7 +14,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Repeat signups succeed silently so the form doesn't reveal who's already on the list.
     await db()`
       insert into waitlist_signups (email)
       values (${email})
