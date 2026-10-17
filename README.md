@@ -33,14 +33,13 @@ FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FIREBASE_PROJECT_ID=demo-jobber npm run d
 
 ## Deploying
 
-The site is deployed with [Firebase App Hosting](https://firebase.google.com/docs/app-hosting), with DNS on Cloudflare.
+Firebase is only used as the database, so the site can be hosted anywhere that runs Next.js. Set these environment variables on the host, using values from a Firebase service account key (**Project settings → Service accounts → Generate new private key**):
 
-1. In the Firebase console, create a Firestore database, then go to **App Hosting → Get started**. Connect this GitHub repo with `main` as the live branch. Each push to `main` deploys.
-2. Deploy the Firestore rules, which block all access from browsers so only the server can read or write signups: `npx firebase-tools deploy --only firestore:rules`.
-3. In **App Hosting → your backend → Settings → Domains**, add your domain. Firebase shows the DNS records to create.
-4. In Cloudflare **DNS**, add those records with the proxy set to **DNS only** (grey cloud) until Firebase shows the domain as connected and the certificate is issued.
+- `FIREBASE_PROJECT_ID`
+- `FIREBASE_CLIENT_EMAIL`
+- `FIREBASE_PRIVATE_KEY`
 
-On App Hosting the server uses the project's own service account, so the `FIREBASE_*` variables are only needed locally.
+To update the Firestore security rules, which block all access from browsers so only the server can read or write signups, run `npx firebase-tools deploy --only firestore:rules`.
 
 ## Learn More
 
