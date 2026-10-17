@@ -22,25 +22,16 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Waitlist database
 
-Waitlist signups are saved to Firestore in the `waitlist` collection, one document per email.
+Waitlist signups are saved to the `waitlist_signups` table in Supabase.
 
-To run it locally, copy `.env.example` to `.env.local` and fill in the values from a Firebase service account key (**Project settings → Service accounts → Generate new private key**). Or use the emulator:
+1. In the Supabase dashboard, open **SQL Editor** and run `supabase/migrations/20261017000000_waitlist_signups.sql`.
+2. Copy `.env.example` to `.env.local` and fill in the values from **Connect → App Frameworks → Next.js** (or **Project Settings → API Keys**):
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
-```bash
-npx firebase-tools emulators:start --only firestore --project demo-jobber
-FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FIREBASE_PROJECT_ID=demo-jobber npm run dev
-```
+Row level security lets the publishable key insert signups but not read them. View signups in **Table Editor → waitlist_signups**.
 
-## Deploying
-
-The site is deployed with [Firebase App Hosting](https://firebase.google.com/docs/app-hosting), with DNS on Cloudflare.
-
-1. In the Firebase console, create a Firestore database, then go to **App Hosting → Get started**. Connect this GitHub repo with `main` as the live branch. Each push to `main` deploys.
-2. Deploy the Firestore rules, which block all access from browsers so only the server can read or write signups: `npx firebase-tools deploy --only firestore:rules`.
-3. In **App Hosting → your backend → Settings → Domains**, add your domain. Firebase shows the DNS records to create.
-4. In Cloudflare **DNS**, add those records with the proxy set to **DNS only** (grey cloud) until Firebase shows the domain as connected and the certificate is issued.
-
-On App Hosting the server uses the project's own service account, so the `FIREBASE_*` variables are only needed locally.
+Set the same two variables on whichever host runs the site.
 
 ## Learn More
 

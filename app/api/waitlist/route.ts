@@ -1,8 +1,7 @@
-import { FieldValue } from "firebase-admin/firestore";
-import { db } from "@/lib/firebase";
+import { supabase } from "@/lib/supabase";
 
-const EMAIL_RE = /^[^\s@/]+@[^\s@/]+\.[^\s@/]+$/;
-const ALREADY_EXISTS = 6;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const UNIQUE_VIOLATION = "23505";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -15,19 +14,16 @@ export async function POST(request: Request) {
     );
   }
 
-  try {
-    await db()
-      .collection("waitlist")
-      .doc(email)
-      .create({ email, createdAt: FieldValue.serverTimestamp() });
-  } catch (err) {
-    if ((err as { code?: number }).code !== ALREADY_EXISTS) {
-      console.error("[waitlist] failed to save signup", err);
-      return Response.json(
-        { error: "Couldn't join the waitlist." },
-        { status: 500 },
-      );
-    }
+  const { error } = await supabase()
+    .from("waitlist_signups")
+    .insert({ email });
+
+  if (error && error.code !== UNIQUE_VIOLATION) {
+    console.error("[waitlist] failed to save signup", error);
+    return Response.json(
+      { error: "Couldn't join the waitlist." },
+      { status: 500 },
+    );
   }
 
   return Response.json({ ok: true });
