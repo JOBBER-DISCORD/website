@@ -19,9 +19,9 @@ const mono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Jobber — Stop applying. Start interviewing.",
+  title: "Jobify — Stop applying. Start interviewing.",
   description:
-    "Jobber is a job bot that finds roles, tailors your resume and applies for you. Join the waitlist.",
+    "Jobify is a job bot that finds roles, tailors your resume and applies for you. Join the waitlist.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

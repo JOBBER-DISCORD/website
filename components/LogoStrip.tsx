@@ -4,7 +4,7 @@ import { eyebrow, wrap } from "@/lib/styles";
 export default function LogoStrip() {
   return (
     <div className={`${wrap} pt-6 pb-16 text-center`}>
-      <p className={eyebrow}>Jobber users have gotten jobs at</p>
+      <p className={eyebrow}>Jobify users have gotten jobs at</p>
       <div className="mt-5 flex flex-wrap justify-center gap-x-11 gap-y-3.5 font-display text-[22px] font-extrabold tracking-[-0.03em] text-muted opacity-80">
         {brands.map((brand) => (
           <span
