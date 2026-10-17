@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import { cardCompanies } from "@/lib/companies";
 import { jobCard, pill } from "@/lib/styles";
 
@@ -76,11 +77,13 @@ function JobCard({ card }: { card: Card }) {
   return (
     <div className={`${jobCard.card} shadow-[0_1px_0_var(--line)]`}>
       <div className={jobCard.top}>
-        <span className={jobCard.logo} style={{ background: company.color }}>
-          <svg viewBox={company.viewBox} width="18" height="18" fill="#fff" aria-hidden="true">
-            <path d={company.path} />
-          </svg>
-        </span>
+        <Image
+          className={`${jobCard.logo} object-cover`}
+          src={company.logo}
+          alt=""
+          width={34}
+          height={34}
+        />
         <span className={jobCard.company}>
           {company.name}
           <br />
