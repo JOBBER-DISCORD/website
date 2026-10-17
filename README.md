@@ -25,11 +25,11 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 Waitlist signups are saved to the `waitlist_signups` table in Supabase.
 
 1. In the Supabase dashboard, open **SQL Editor** and run `supabase/migrations/20261017000000_waitlist_signups.sql`.
-2. Copy `.env.example` to `.env.local` and fill in:
-   - `SUPABASE_URL`: **Project Settings → Data API → Project URL**
-   - `SUPABASE_SECRET_KEY`: **Project Settings → API Keys**, the secret key (`sb_secret_…`) or the legacy `service_role` key
+2. Copy `.env.example` to `.env.local` and fill in the values from **Connect → App Frameworks → Next.js** (or **Project Settings → API Keys**):
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
-The secret key is server-only and must never be exposed to the browser. Row level security is on with no policies, so the public key can't read or write the table.
+Row level security lets the publishable key insert signups but not read them. View signups in **Table Editor → waitlist_signups**.
 
 Set the same two variables on whichever host runs the site.
 
