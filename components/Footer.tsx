@@ -13,7 +13,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-[1160px] flex-wrap items-center justify-between gap-x-8 gap-y-4 px-5">
         <Logo />
         <span>
-          © <CurrentYear /> Jobify
+          © <CurrentYear /> Jobify Inc
         </span>
       </div>
     </footer>

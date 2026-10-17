@@ -3,21 +3,6 @@ import Image from "next/image";
 import { cardCompanies } from "@/lib/companies";
 import { jobCard, pill } from "@/lib/styles";
 
-const roles = [
-  "Senior Product Designer",
-  "Frontend Engineer",
-  "Data Analyst",
-  "Backend Engineer (Go)",
-  "Product Manager",
-  "New Grad SWE",
-  "ML Engineer",
-  "UX Researcher",
-  "Full‑stack Developer",
-  "DevOps Engineer",
-  "iOS Engineer",
-  "Growth Marketer",
-];
-const pay = ["$120–145k", "$95–120k", "$140–170k", "$85–105k", "$160–190k", "$110–135k", "$130–150k"];
 const statuses = [
   ["found", "Found"],
   ["applied", "Applied"],
@@ -27,7 +12,7 @@ const statuses = [
   ["offer", "Offer"],
 ] as const;
 
-const COLUMNS = 6;
+const COLUMNS = 7;
 const CARDS_PER_COLUMN = 6;
 
 type Card = {
@@ -45,21 +30,43 @@ function makeCards(): Card[][] {
     seed = (seed * 9301 + 49297) % 233280;
     return Math.floor((seed / 233280) * n);
   };
-  return Array.from({ length: COLUMNS }, () =>
-    Array.from({ length: CARDS_PER_COLUMN }, () => {
-      const company = cardCompanies[rnd(cardCompanies.length)];
+  const shuffled = () => {
+    const companies = [...cardCompanies];
+    for (let i = companies.length - 1; i > 0; i--) {
+      const j = rnd(i + 1);
+      [companies[i], companies[j]] = [companies[j], companies[i]];
+    }
+    return companies;
+  };
+  // Deal companies from shuffled decks so every company shows up before any repeats,
+  // and never twice in the same column.
+  const deck: Card["company"][] = [];
+  const nextCompany = (inColumn: Set<Card["company"]>) => {
+    let i = deck.findLastIndex((company) => !inColumn.has(company));
+    if (i === -1) {
+      deck.unshift(...shuffled());
+      i = deck.findLastIndex((company) => !inColumn.has(company));
+    }
+    return deck.splice(i, 1)[0];
+  };
+  return Array.from({ length: COLUMNS }, () => {
+    const inColumn = new Set<Card["company"]>();
+    return Array.from({ length: CARDS_PER_COLUMN }, () => {
+      const company = nextCompany(inColumn);
+      inColumn.add(company);
+      const role = company.roles[rnd(company.roles.length)];
       const status = statuses[rnd(statuses.length)];
       const match = 72 + rnd(27);
       return {
         company,
         status,
         match,
-        pay: pay[rnd(pay.length)],
-        role: roles[rnd(roles.length)],
-        location: company.locations[rnd(company.locations.length)],
+        pay: role.pay,
+        role: role.title,
+        location: role.locations[rnd(role.locations.length)],
       };
-    }),
-  );
+    });
+  });
 }
 
 const columns = makeCards();
@@ -106,10 +113,11 @@ function JobCard({ card }: { card: Card }) {
 export default function JobWall() {
   return (
     <div
-      className="relative mt-14 h-[560px] [mask-image:linear-gradient(to_bottom,transparent,#000_18%,#000_70%,transparent)]"
+      className="relative mt-14 h-[560px] select-none [mask-image:linear-gradient(to_bottom,transparent,#000_18%,#000_70%,transparent)] md:h-[720px]"
       aria-hidden="true"
     >
-      <div className="absolute -top-10 left-1/2 grid w-[1500px] grid-cols-6 gap-4 [transform:translateX(-50%)_rotate(-6deg)_skewX(4deg)]">
+      {/* Tilt around the middle of the visible strip, not the middle of the very tall grid, so it stays centred. */}
+      <div className="absolute -top-10 left-1/2 grid w-[1750px] origin-[50%_320px] grid-cols-7 gap-4 [transform:translateX(-50%)_rotate(-6deg)_skewX(4deg)] md:origin-[50%_400px]">
         {columns.map((cards, c) => (
           <div
             className="flex animate-rise flex-col gap-4 motion-reduce:animate-none"
