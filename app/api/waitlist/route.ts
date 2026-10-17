@@ -1,6 +1,8 @@
-import { db } from "@/lib/db";
+import { FieldValue } from "firebase-admin/firestore";
+import { db } from "@/lib/firebase";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[^\s@/]+@[^\s@/]+\.[^\s@/]+$/;
+const ALREADY_EXISTS = 6;
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -14,17 +16,18 @@ export async function POST(request: Request) {
   }
 
   try {
-    await db()`
-      insert into waitlist_signups (email)
-      values (${email})
-      on conflict (email) do nothing
-    `;
+    await db()
+      .collection("waitlist")
+      .doc(email)
+      .create({ email, createdAt: FieldValue.serverTimestamp() });
   } catch (err) {
-    console.error("[waitlist] failed to save signup", err);
-    return Response.json(
-      { error: "Couldn't join the waitlist." },
-      { status: 500 },
-    );
+    if ((err as { code?: number }).code !== ALREADY_EXISTS) {
+      console.error("[waitlist] failed to save signup", err);
+      return Response.json(
+        { error: "Couldn't join the waitlist." },
+        { status: 500 },
+      );
+    }
   }
 
   return Response.json({ ok: true });

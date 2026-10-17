@@ -22,11 +22,25 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Waitlist database
 
-Waitlist signups are saved to Postgres. Run `db/schema.sql` against a local database, then copy `.env.example` to `.env.local` and set `DATABASE_URL`.
+Waitlist signups are saved to Firestore in the `waitlist` collection, one document per email.
+
+To run it locally, copy `.env.example` to `.env.local` and fill in the values from a Firebase service account key (**Project settings → Service accounts → Generate new private key**). Or use the emulator:
+
+```bash
+npx firebase-tools emulators:start --only firestore --project demo-jobber
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FIREBASE_PROJECT_ID=demo-jobber npm run dev
+```
 
 ## Deploying
 
-See [DEPLOY.md](DEPLOY.md).
+The site is deployed with [Firebase App Hosting](https://firebase.google.com/docs/app-hosting), with DNS on Cloudflare.
+
+1. In the Firebase console, create a Firestore database, then go to **App Hosting → Get started**. Connect this GitHub repo with `main` as the live branch. Each push to `main` deploys.
+2. Deploy the Firestore rules, which block all access from browsers so only the server can read or write signups: `npx firebase-tools deploy --only firestore:rules`.
+3. In **App Hosting → your backend → Settings → Domains**, add your domain. Firebase shows the DNS records to create.
+4. In Cloudflare **DNS**, add those records with the proxy set to **DNS only** (grey cloud) until Firebase shows the domain as connected and the certificate is issued.
+
+On App Hosting the server uses the project's own service account, so the `FIREBASE_*` variables are only needed locally.
 
 ## Learn More
 
