@@ -1,3 +1,9 @@
+# Jobify
+
+[![CI](https://github.com/JOBBER-DISCORD/website/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/JOBBER-DISCORD/website/actions/workflows/ci.yml)
+
+The website for [jobify.cc](https://jobify.cc).
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -32,6 +38,13 @@ Waitlist signups are saved to the `waitlist_signups` table in Supabase.
 Row level security lets the publishable key insert signups but not read them. View signups in **Table Editor → waitlist_signups**.
 
 Set the same two variables on whichever host runs the site.
+
+## Deploying
+
+The site is hosted on Vercel, which is connected to this repo:
+
+- **Pull requests** run CI (lint and build) and get a Vercel preview deployment.
+- **Pushes to `main`** run CI and deploy to production at [jobify.cc](https://jobify.cc).
 
 ## Learn More
 
