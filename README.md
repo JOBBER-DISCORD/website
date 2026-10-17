@@ -22,24 +22,16 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Waitlist database
 
-Waitlist signups are saved to Firestore in the `waitlist` collection, one document per email.
+Waitlist signups are saved to the `waitlist_signups` table in Supabase.
 
-To run it locally, copy `.env.example` to `.env.local` and fill in the values from a Firebase service account key (**Project settings → Service accounts → Generate new private key**). Or use the emulator:
+1. In the Supabase dashboard, open **SQL Editor** and run `supabase/migrations/20261017000000_waitlist_signups.sql`.
+2. Copy `.env.example` to `.env.local` and fill in:
+   - `SUPABASE_URL`: **Project Settings → Data API → Project URL**
+   - `SUPABASE_SECRET_KEY`: **Project Settings → API Keys**, the secret key (`sb_secret_…`) or the legacy `service_role` key
 
-```bash
-npx firebase-tools emulators:start --only firestore --project demo-jobber
-FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FIREBASE_PROJECT_ID=demo-jobber npm run dev
-```
+The secret key is server-only and must never be exposed to the browser. Row level security is on with no policies, so the public key can't read or write the table.
 
-## Deploying
-
-Firebase is only used as the database, so the site can be hosted anywhere that runs Next.js. Set these environment variables on the host, using values from a Firebase service account key (**Project settings → Service accounts → Generate new private key**):
-
-- `FIREBASE_PROJECT_ID`
-- `FIREBASE_CLIENT_EMAIL`
-- `FIREBASE_PRIVATE_KEY`
-
-To update the Firestore security rules, which block all access from browsers so only the server can read or write signups, run `npx firebase-tools deploy --only firestore:rules`.
+Set the same two variables on whichever host runs the site.
 
 ## Learn More
 
