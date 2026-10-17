@@ -8,7 +8,7 @@ export default function Logo() {
       href="/#top"
     >
       <Image className="block flex-none" src="/logo.svg" alt="" width={28} height={28} unoptimized priority />
-      Jobber
+      Jobify
     </Link>
   );
 }

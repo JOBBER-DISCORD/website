@@ -7,7 +7,7 @@ import Nav from "@/components/Nav";
 import { button, eyebrow, jobCard, pill, strike } from "@/lib/styles";
 
 export const metadata: Metadata = {
-  title: "Page not found — Jobber",
+  title: "Page not found — Jobify",
 };
 
 const log = [
@@ -38,7 +38,7 @@ export default function NotFound() {
           <div className={jobCard.top}>
             <span className={`${jobCard.logo} bg-ink font-mono text-[11px] font-medium text-bg`}>404</span>
             <span className={jobCard.company}>
-              jobber.ai
+              jobify.cc
               <br />
               Salary: undisclosed
             </span>
